@@ -23,6 +23,7 @@ pip install -r requirements.txt
 
 The application consists of the following components:
 
+- `init.py`: Intial program that needs to be executed to install the facenet for the first time only. (This is not necessary but ensures that the server goes online immediatly after running app.py)
 - `app.py`: The main Flask application script.
 - `templates/`: Directory containing HTML templates for rendering web pages.
 - `static/`: Directory for storing static files such as uploaded images.
