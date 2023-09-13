@@ -14,6 +14,11 @@ Before using this application, make sure you have the following prerequisites in
 - OpenCV
 - Web browser
 
+You can install the required Python libraries by running the following command within your project directory:
+
+```bash
+pip install -r requirements.txt
+```
 ## Application Structure
 
 The application consists of the following components:
