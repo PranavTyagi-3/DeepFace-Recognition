@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognizer</title>
+    <!-- Add Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="file" class="form-control-file" id="file" name="file" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h1>Webcam Capture</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <video id="webcam" class="w-100" autoplay></video>
+                <button id="captureButton" class="btn btn-success mt-3">Capture</button>
+                <canvas id="canvas" style="display: none;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const videoElement = document.getElementById('webcam');
+        const captureButton = document.getElementById('captureButton');
+        const canvas = document.getElementById('canvas');
+        const fileInput = document.getElementById('file');
+        const uploadForm = document.getElementById('uploadForm');
+
+        // Check for webcam support
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    videoElement.srcObject = stream;
+                })
+                .catch(function (error) {
+                    console.error('Error accessing webcam:', error);
+                });
+        }
+
+        captureButton.addEventListener('click', function () {
+            const context = canvas.getContext('2d');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+            // Convert captured frame to a Blob
+            canvas.toBlob(function (blob) {
+                // Create a new FormData object
+                const formData = new FormData();
+
+                // Append the captured image as a file
+                formData.append('file', blob, 'webcam_capture.jpg');
+
+                // Create a new XMLHttpRequest to submit the form data
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/', true);
+
+                // Send the form data
+                xhr.send(formData);
+            }, 'image/jpeg');
+        });
+    </script>
+
+    <!-- Add Bootstrap JS and Popper.js scripts here -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for image display */
+        .image-preview {
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- Brand/logo (you can replace this with your logo) -->
+            <a class="navbar-brand" href="{{ url_for('index') }}">Face Recognition</a>
+
+            <!-- Navbar buttons -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary mx-2" href="{{ url_for('register') }}" style="color:white">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success mx-2" href="{{ url_for('recognition') }}" style="color:white">Recognition</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1>Image Upload Form</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id">ID:</label>
+                        <input type="text" class="form-control" id="user_id" name="user_id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Upload Image:</label>
+                        <input type="file" class="form-control-file" id="file" name="file" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="image-preview">
+                    <img id="uploaded-image" src="#" alt="Uploaded Image" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if message %}
+    <div class="text-center">
+        {% if message=="Registered Successfully" %}
+        <h2>Registered Successfully</h2>
+        {% elif message=="Unsuccessfull" %}
+        <h2>{{ message }}, Please ensure face in clearly visible</h2>
+        {% else %}
+        <h2>{{ message }}</h2>
+        {% endif %}
+    </div>
+    {% endif %}
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // JavaScript to display uploaded image
+        document.getElementById('file').addEventListener('change', function () {
+            const uploadedImage = document.getElementById('uploaded-image');
+            const file = this.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

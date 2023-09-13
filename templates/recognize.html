@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognizer</title>
+    <!-- Add Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .preview {
+            max-width: 100%;
+            max-height: 300px; /* Adjust the height as needed */
+        }
+        .row{
+            align-items: center;
+        }
+        .result{
+            text-align: center;
+            {% if verify=="Success" %}
+            background-color: #4ed14e80;;
+            {% elif verify=="Fail" %}
+            background-color: #d14e4e80;
+            {% else %}
+            display: block;
+            {% endif %}
+            color: white;
+            width: 30%;
+            padding: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- Brand/logo (you can replace this with your logo) -->
+            <a class="navbar-brand" href="{{ url_for('index') }}">Face Recognition</a>
+
+            <!-- Navbar buttons -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary mx-2" href="{{ url_for('register') }}" style="color:white">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success mx-2" href="{{ url_for('recognition') }}" style="color:white">Recognition</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-3 result">
+        <h1>{{ verify }}</h1>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Upload form on the left -->
+            <div class="col-md-6" style="
+            text-align: center;
+        ">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="image">Upload Image:</label>
+                        <input type="file" class="form-control-file" id="file" name="file" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+            <!-- Uploaded image preview on the right (initially hidden) -->
+            <div class="col-md-6" id="imagePreviewContainer" style="display: none;">
+                <h1>Image Preview</h1>
+                <img src="" id="imagePreview" class="preview" alt="Image Preview">
+            </div>
+        </div>
+    </div>
+    {% if name %}
+   <div class="container mt-5 text-center">
+    <h3>Welcome back, {{ name }} </h3>
+    </div>
+    {% endif %}
+    
+    
+    <div class="container mt-5 text-center">
+    {% if verify=="Fail" %}
+    <h3>The current face cannot be recognized, please use a proper photo showing the face</h3>
+    <h3>Also make sure that you are registered in the system</h3>
+    {% elif verify=="Wrong file type" %}
+    <h3>Wrong file type</h3>
+    {% endif %}
+    </div>
+    
+    <!-- Add Bootstrap JS and Popper.js scripts here -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to display the uploaded image -->
+    <script>
+        const fileInput = document.getElementById('file');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+
+        // Function to show image preview
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    imagePreviewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.src = '';
+                imagePreviewContainer.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
