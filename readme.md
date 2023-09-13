@@ -82,7 +82,7 @@ Renders the application's homepage (index.html).
 
 ## Contributions
 
-Contributions to the project are welcome. If you encounter issues or have suggestions, please open an issue or submit a pull request on the [GitHub repository](https://github.com/your/repository).
+Contributions to the project are welcome. If you encounter issues or have suggestions, please open an issue or submit a pull request on the [GitHub repository](https://github.com/PranavTyagi-3/DeepFace-Recognition).
 
 
 ## Acknowledgments
